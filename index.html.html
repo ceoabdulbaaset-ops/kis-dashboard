@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayaan Integrated Systems | Digital Products Split</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern, Intentional Architectural Palette */
+        :root {
+            --bg-base: #f4f4f5;
+            --surface: #ffffff;
+            --text-primary: #18181b; 
+            --text-secondary: #71717a;
+            --border-subtle: #e4e4e7;
+            
+            /* Split Colors */
+            --kis-share: #3f3f46; 
+            --creator-share: #a1a1aa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding: 3rem 2rem;
+        }
+
+        .dashboard-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Architecture */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            background-color: #10b981; /* Live status green */
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* KPI Grid System */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .kpi-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 2.25rem;
+            font-weight: 400;
+            letter-spacing: -0.04em;
+        }
+
+        /* KIS vs Creator Split Architecture */
+        .split-section {
+            background: var(--surface);
+            padding: 2.5rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 2px;
+        }
+
+        .split-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .split-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .digital-pool {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        /* Shared Progress Bar */
+        .shared-bar-container {
+            height: 12px;
+            width: 100%;
+            background: var(--border-subtle);
+            border-radius: 6px;
+            display: flex;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .bar-kis {
+            height: 100%;
+            background: var(--kis-share);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bar-creator {
+            height: 100%;
+            background: var(--creator-share);
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Split Details */
+        .split-details {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .detail-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-block.right {
+            text-align: right;
+        }
+
+        .entity-name {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .entity-name.kis { color: var(--kis-share); }
+        .entity-name.creator { color: var(--creator-share); }
+
+        .entity-amount {
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .entity-percent {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-wrapper">
+        <header>
+            <div>
+                <h1>Kayaan Integrated Systems</h1>
+            </div>
+            <div class="status-indicator">
+                <span class="dot"></span>
+                <span id="sync-status">Initializing...</span>
+            </div>
+        </header>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <span class="kpi-label">Total Revenue</span>
+                <span class="kpi-value" id="val-total-rev">₦0</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Today's Sales</span>
+                <span class="kpi-value" id="val-today-sales">₦0</span>
+            </div>
+            <div class="kpi-card">
+                <span class="kpi-label">Total Buyers</span>
+                <span class="kpi-value" id="val-total-buyers">0</span>
+            </div>
+        </div>
+
+        <div class="split-section">
+            <div class="split-header-row">
+                <span class="split-title">Digital Products: Distribution Split</span>
+                <span class="digital-pool" id="val-digital-pool">₦0</span>
+            </div>
+
+            <div class="shared-bar-container">
+                <div class="bar-kis" id="ui-bar-kis" style="width: 0%"></div>
+                <div class="bar-creator" id="ui-bar-creator" style="width: 0%"></div>
+            </div>
+
+            <div class="split-details">
+                <div class="detail-block">
+                    <span class="entity-name kis">KIS Share</span>
+                    <span class="entity-amount" id="val-kis-amount">₦0</span>
+                    <span class="entity-percent" id="val-kis-percent">0%</span>
+                </div>
+                <div class="detail-block right">
+                    <span class="entity-name creator">Creator Share</span>
+                    <span class="entity-amount" id="val-creator-amount">₦0</span>
+                    <span class="entity-percent" id="val-creator-percent">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- N8N WEBHOOK CONFIGURATION ---
+        // Drop your actual n8n Production Webhook URL here once deployed
+        const N8N_WEBHOOK_URL = ""; 
+
+        // --- FALLBACK / DEFAULT DATA ---
+        const systemData = {
+            totalRevenue: 5200000,
+            todaysSales: 125000,
+            totalBuyers: 342,
+            digitalProducts: {
+                totalPool: 2400000,
+                kisPercentage: 40,
+                creatorPercentage: 60
+            }
+        };
+
+        // --- UTILITY FUNCTIONS ---
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-NG', {
+                style: 'currency',
+                currency: 'NGN',
+                minimumFractionDigits: 0
+            }).format(amount);
+        };
+
+        // --- RENDER ENGINE ---
+        const renderDashboard = (data) => {
+            // Render KPIs
+            document.getElementById('val-total-rev').innerText = formatCurrency(data.totalRevenue);
+            document.getElementById('val-today-sales').innerText = formatCurrency(data.todaysSales);
+            document.getElementById('val-total-buyers').innerText = data.totalBuyers.toLocaleString();
+
+            // Calculate Split Math
+            const pool = data.digitalProducts.totalPool;
+            const kisPct = data.digitalProducts.kisPercentage;
+            const creatorPct = data.digitalProducts.creatorPercentage;
+            
+            const kisAmount = pool * (kisPct / 100);
+            const creatorAmount = pool * (creatorPct / 100);
+
+            // Render Split Pool
+            document.getElementById('val-digital-pool').innerText = formatCurrency(pool);
+
+            // Render Split Details
+            document.getElementById('val-kis-amount').innerText = formatCurrency(kisAmount);
+            document.getElementById('val-kis-percent').innerText = `${kisPct}%`;
+            
+            document.getElementById('val-creator-amount').innerText = formatCurrency(creatorAmount);
+            document.getElementById('val-creator-percent').innerText = `${creatorPct}%`;
+
+            // Trigger Bar Animations
+            setTimeout(() => {
+                document.getElementById('ui-bar-kis').style.width = `${kisPct}%`;
+                document.getElementById('ui-bar-creator').style.width = `${creatorPct}%`;
+            }, 100);
+        };
+
+        // --- DATA FETCHING (n8n Integration) ---
+        const fetchDashboardData = async () => {
+            const statusText = document.getElementById('sync-status');
+            
+            if (!N8N_WEBHOOK_URL) {
+                statusText.innerText = "System Active";
+                renderDashboard(systemData);
+                return;
+            }
+
+            try {
+                statusText.innerText = "Syncing...";
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'GET', // Change to POST if required by n8n
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const liveData = await response.json();
+                renderDashboard(liveData);
+                
+                const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                statusText.innerText = `Synced at ${time}`;
+
+            } catch (error) {
+                console.error("n8n Sync Failed:", error);
+                statusText.innerText = "System Active";
+                renderDashboard(systemData);
+            }
+        };
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', fetchDashboardData);
+    </script>
+</body>
+</html>
